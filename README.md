@@ -3,6 +3,8 @@ tc-swas
 
 ##Challenge Overview
 
+Below are a copy of the challange details from TopCoder's Go Learning Challenge - Simple Web-API Server.  See [contest page](http://www.topcoder.com/challenge-details/30046011/?type=develop) for more info.
+
 Welcome to the simple web API server challenge ! 
 
 This is the first challenge of our second stage ‘Develop Backend Services with Golang’. The Goal of this challenge is to develop a simple web API server with Golang. The server provides an API to authenticate users. 
