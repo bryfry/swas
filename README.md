@@ -3,7 +3,9 @@ tc-swas
 
 ##Challenge Overview
 
-Below are a copy of the challange details from TopCoder's Go Learning Challenge - Simple Web-API Server.  See [contest page](http://www.topcoder.com/challenge-details/30046011/?type=develop) for more info.
+Below are a copy of the challange details from TopCoder's Go Learning Challenge - Simple Web-API Server.  
+
+See the [contest page](http://www.topcoder.com/challenge-details/30046011/?type=develop) for more info.
 
 Welcome to the simple web API server challenge ! 
 
