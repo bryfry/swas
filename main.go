@@ -8,11 +8,17 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// TODO make cli interface with useful help and file handle
+// TODO ensure/test response is application/json
+// TODO generate godoc
+// TODO write a nice README.md
+// TODO logging
+
 func main() {
 
-	proxy, err := proxy.NewProxy("./users.json")
+	p, err := proxy.NewProxy("./users.json")
 	if err != nil {
-		log.Fatalln("Proxy init failed: %s", err)
+		log.Fatalf("Proxy init failed: %s", err)
 	}
 
 	r := mux.NewRouter()
@@ -23,6 +29,6 @@ func main() {
 		Headers("Content-Type", "application/x-www-form-urlencoded").
 		Subrouter()
 
-	api.Handle("/api/2/domains/{domain}/proxyauth/", proxy.Authenticate())
-	http.ListenAndServe(":8080", r)
+	api.Handle("/api/2/domains/{domain}/proxyauth/", p.Authenticate())
+	http.ListenAndServe(":8080", r) // TODO make cli argument
 }

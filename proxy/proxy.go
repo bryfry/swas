@@ -37,7 +37,10 @@ func b64sha256(password string) string {
 	return base64.StdEncoding.EncodeToString(s256.Sum(nil))
 }
 
-// parse the json users file and return the proxy data type
+// Parse the json users file and return the proxy data type
+// Unfortunately the process of decoding from json means plaintext
+// passwords are handled temporarily and then overwritten with b64sha256
+// representations
 func NewProxy(filePath string) (*Proxy, error) {
 	usersJson, err := os.Open(filePath)
 	if err != nil {
@@ -81,10 +84,10 @@ func (d *Domain) get(reqUser string) (*User, error) {
 
 // Per policy: in case of authentication failure or validation errors.
 // The 'reason' is always is always same: "denied by policy".
-// Similary success is simply access_granted: true.
+// Additionally, success is always simply access_granted: true.
 // Having this separated as a function will be useful if different
 // responses are needed in the future
-// Assuption: 200 OK is golang default
+// Assumption: 200 OK is golang default
 func writeSuccess(w http.ResponseWriter, success bool) {
 	var r *Response
 	out := json.NewEncoder(w)
@@ -101,6 +104,27 @@ func writeSuccess(w http.ResponseWriter, success bool) {
 	out.Encode(r)
 }
 
+// used for testing, less performant than using io.Writer interface
+func successBody(success bool) string {
+	var r *Response
+	if success {
+		r = &Response{
+			Success: success,
+		}
+	} else {
+		r = &Response{
+			Success: success,
+			Reason:  "denied by policy",
+		}
+	}
+	// live dangerously, ignoring error for this specific use case
+	b, _ := json.Marshal(r)
+	return string(b) + "\n" // http body fix, expects newline at end
+}
+
+// Proxy Authentication handler expects looks up domain (mux url variable),
+// username and password (query parameters) and returns the appropriate
+// Response and Status Code
 func (p *Proxy) Authenticate() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 
