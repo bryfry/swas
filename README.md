@@ -16,6 +16,7 @@ This API is to authenticate user for a domain by username and password via HTTP.
 
 ###Endpoint
 `/api/2/domains/{domain name}/proxyauth`
+
  We use port 80 but we would like to use other ports such as 8080 for testing.
 
 ###Request
@@ -25,8 +26,11 @@ This API is to authenticate user for a domain by username and password via HTTP.
 ####Parameters
 * `username`
 * `password`
+
 ‘password’ parameter is encrypted with the following logic
-‘{SHA256}’ + Base64 encoded SHA256 digest of the user’s password
+
+`‘{SHA256}’ + Base64 encoded SHA256 digest of the user’s password`
+
 Example
 ```
 original password : abcd1234
