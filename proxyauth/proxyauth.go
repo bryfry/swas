@@ -1,4 +1,4 @@
-package proxy
+package proxyauth
 
 import (
 	"crypto/sha256"
@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"os"
 
+	log "github.com/Sirupsen/logrus"
 	"github.com/gorilla/mux"
 )
 
@@ -56,6 +57,10 @@ func NewProxy(filePath string) (*Proxy, error) {
 	for i, d := range p.Domains {
 		for j, u := range d.Users {
 			p.Domains[i].Users[j].Password = "{SHA256}" + b64sha256(u.Password)
+			log.WithFields(log.Fields{
+				"domain": d.Address,
+				"user":   u.Username,
+			}).Info("User Initalized")
 		}
 	}
 	return p, nil
@@ -90,6 +95,7 @@ func (d *Domain) get(reqUser string) (*User, error) {
 // Assumption: 200 OK is golang default
 func writeSuccess(w http.ResponseWriter, success bool) {
 	var r *Response
+	w.Header().Set("Content-Type", "application/json")
 	out := json.NewEncoder(w)
 	if success {
 		r = &Response{
@@ -101,6 +107,7 @@ func writeSuccess(w http.ResponseWriter, success bool) {
 			Reason:  "denied by policy",
 		}
 	}
+
 	out.Encode(r)
 }
 
@@ -127,50 +134,66 @@ func successBody(success bool) string {
 // Response and Status Code
 func (p *Proxy) Authenticate() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		logfields := log.Fields{
+			"Method": r.Method,
+		}
 
 		// domain lookup
 		vars := mux.Vars(r)
 		urlDomain, ok := vars["domain"]
 		if !ok {
 			w.WriteHeader(500) // Server error
+			logfields["Status"] = 500
+			log.WithFields(logfields).Warn("Domain parsing failed")
 			return
 		}
 		d, err := p.get(urlDomain)
+		logfields["Domain"] = urlDomain
 		if err != nil {
 			w.WriteHeader(404) // No such domain
+			logfields["Status"] = 404
+			log.WithFields(logfields).Info("No such domain")
 			return
 		}
 
 		// parse parameters
 		err = r.ParseForm()
 		if err != nil {
-			w.WriteHeader(500) // Server error
+			w.WriteHeader(500)
+			logfields["Status"] = 500
+			log.WithFields(logfields).Warn("Parse form failure")
 			return
 		}
 		username := r.Form.Get("username")
 		if username == "" {
-			writeSuccess(w, false) // no username provided
+			writeSuccess(w, false)
+			log.WithFields(logfields).Info("No username provided")
 			return
 		}
+		logfields["Username"] = username
 		password := r.Form.Get("password")
 		if password == "" {
-			writeSuccess(w, false) // no password
+			writeSuccess(w, false)
+			log.WithFields(logfields).Info("No password provided")
 			return
 		}
 
 		// user lookup
 		u, err := d.get(username)
 		if err != nil {
-			writeSuccess(w, false) // no such user
+			writeSuccess(w, false)
+			log.WithFields(logfields).Info("No such user")
 			return
 		}
 
 		// password validation
 		if u.Password != password {
-			writeSuccess(w, false) // password mismatch
+			writeSuccess(w, false)
+			log.WithFields(logfields).Info("Password mismatch")
 			return
 		} else {
-			writeSuccess(w, true) // successful authenticaton
+			writeSuccess(w, true)
+			log.WithFields(logfields).Info("Successful authentication")
 			return
 		}
 
