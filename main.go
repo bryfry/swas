@@ -13,8 +13,7 @@ import (
 	"github.com/gorilla/mux"
 )
 
-// TODO generate godoc
-
+// Define the command line arguments and help info
 func cliInit() *cli.App {
 	app := cli.NewApp()
 	app.Name = "bryfry_swas"
@@ -39,6 +38,7 @@ func cliInit() *cli.App {
 	return app
 }
 
+// Open and handle errors associated with creating a new Proxy data model
 func proxyInit(file string) *proxyauth.Proxy {
 	p, err := proxyauth.NewProxy(file)
 	if err != nil {
@@ -85,16 +85,16 @@ func main() {
 
 	app.Action = func(c *cli.Context) {
 
+		if c.Bool("verbose") {
+			log.SetLevel(log.DebugLevel)
+		}
+
 		log.WithFields(log.Fields{"users": c.String("users")}).Info("Proxy Auth Initalizing Users...")
 		proxy := proxyInit(c.String("users"))
 
 		log.WithFields(log.Fields{"port": c.Int("port")}).Info("Proxy Auth API Server Starting...")
 		router := apiInit(proxy)
 		address := fmt.Sprintf(": %d", c.Int("port"))
-
-		if c.Bool("verbose") {
-			log.SetLevel(log.DebugLevel)
-		}
 
 		// using default router with interceptor pattern (uses api mux)
 		http.Handle("/", httpInterceptor(router))
