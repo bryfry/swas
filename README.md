@@ -1,4 +1,4 @@
-#swas
+#github.com/bryfry/swas
 
 ## Checkout
 ```
