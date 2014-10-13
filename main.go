@@ -6,9 +6,8 @@ import (
 	"os"
 	"time"
 
-	"bryfry_swas/proxyauth"
-
 	log "github.com/Sirupsen/logrus"
+	"github.com/bryfry/swas/proxyauth"
 	"github.com/codegangsta/cli"
 	"github.com/gorilla/mux"
 )
@@ -16,7 +15,7 @@ import (
 // Define the command line arguments and help info
 func cliInit() *cli.App {
 	app := cli.NewApp()
-	app.Name = "bryfry_swas"
+	app.Name = "swas"
 	app.Usage = "Simple Web API Server - Proxy Authentication API endpoint"
 	app.Version = "0.0.1"
 	app.Flags = []cli.Flag{
