@@ -7,6 +7,11 @@ go get github.com/gorilla/mux     # New BSD Licensed
 go get github.com/Sirupsen/logrus # MIT Licensed
 ```
 
+## Expected Environment
+Because bryfry_swas uses an internal package (proxyauth) it is important that go 
+has the appropriate access to find this package via $GOPATH.  Please place the bryfry_swas
+project directory under the src directory of your $GOPATH and everything should work swimmingly!
+
 ## Build
 `go build` or `go install`
 
@@ -21,7 +26,7 @@ Two testing methods are provided, external curl test script and internal go test
 ## Documentation
 view godoc.html to read the godoc for bryfry_swas/proxyauth
 
-## Help
+## Help and CLI options
 `./proxyauth_server --help`
 
 ```
