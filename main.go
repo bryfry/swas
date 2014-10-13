@@ -6,21 +6,19 @@ import (
 	"os"
 	"time"
 
-	"tc_swas/proxyauth"
+	"bryfry_swas/proxyauth"
 
 	log "github.com/Sirupsen/logrus"
 	"github.com/codegangsta/cli"
 	"github.com/gorilla/mux"
 )
 
-// TODO make cli interface with useful help and file handle
 // TODO generate godoc
-// TODO write a nice README.md
 
 func cliInit() *cli.App {
 	app := cli.NewApp()
-	app.Name = "ProxyAuth Server"
-	app.Usage = "Authentication API endpoint"
+	app.Name = "bryfry_swas"
+	app.Usage = "Simple Web API Server - Proxy Authentication API endpoint"
 	app.Version = "0.0.1"
 	app.Flags = []cli.Flag{
 		cli.StringFlag{
@@ -76,7 +74,7 @@ func httpInterceptor(router http.Handler) http.Handler {
 
 		log.WithFields(log.Fields{
 			"time": elapsedTime,
-		}).Info(r.URL.Path)
+		}).Debug(r.URL.Path)
 
 	})
 }

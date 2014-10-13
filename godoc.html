@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <title>proxyauth - The Go Programming Language</title>
+
+<link type="text/css" rel="stylesheet" href=".godoc/style.css">
+
+<link rel="stylesheet" href=".godoc/jquery.treeview.css">
+<script type="text/javascript">window.initFuncs = [];</script>
+</head>
+<body>
+
+<div id='lowframe' style="position: fixed; bottom: 0; left: 0; height: 0; width: 100%; border-top: thin solid grey; background-color: white; overflow: auto;">
+...
+</div><!-- #lowframe -->
+
+<div id="topbar" class="wide"><div class="container">
+
+<form method="GET" action="/search">
+<div id="menu">
+<a href="/doc/">Documents</a>
+<a href="/pkg/">Packages</a>
+<a href="/project/">The Project</a>
+<a href="/help/">Help</a>
+<a href="/blog/">Blog</a>
+
+<input type="text" id="search" name="q" class="inactive" value="Search" placeholder="Search">
+</div>
+<div id="heading"><a href="/">The Go Programming Language</a></div>
+</form>
+
+</div></div>
+
+
+
+<div id="page" class="wide">
+<div class="container">
+
+
+  <div id="plusone"><g:plusone size="small" annotation="none"></g:plusone></div>
+  <h1>Package proxyauth</h1>
+
+
+
+
+<div id="nav"></div>
+
+
+<!--
+	Copyright 2009 The Go Authors. All rights reserved.
+	Use of this source code is governed by a BSD-style
+	license that can be found in the LICENSE file.
+-->
+<!--
+	Note: Static (i.e., not template-generated) href and id
+	attributes start with "pkg-" to make it impossible for
+	them to conflict with generated attributes (some of which
+	correspond to Go identifiers).
+-->
+
+	<script type='text/javascript'>
+        document.ANALYSIS_DATA = null;
+        document.CALLGRAPH = null;
+        </script>
+
+	
+		
+		<div id="short-nav">
+			<dl>
+			<dd><code>import "bryfry_swas/proxyauth"</code></dd>
+			</dl>
+			<dl>
+			<dd><a href="#pkg-overview" class="overviewLink">Overview</a></dd>
+			<dd><a href="#pkg-index" class="indexLink">Index</a></dd>
+			
+			
+			</dl>
+		</div>
+		<!-- The package's Name is printed as title by the top-level template -->
+		<div id="pkg-overview" class="toggleVisible">
+			<div class="collapsed">
+				<h2 class="toggleButton" title="Click to show Overview section">Overview ▹</h2>
+			</div>
+			<div class="expanded">
+				<h2 class="toggleButton" title="Click to hide Overview section">Overview ▾</h2>
+				<p>
+proxyauth package provides data models and associated functions required to
+facilitate a proxy authentication server as specified in SPEC.md
+</p>
+
+			</div>
+		</div>
+		
+
+		<div id="pkg-index" class="toggleVisible">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Index section">Index ▹</h2>
+		</div>
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Index section">Index ▾</h2>
+
+		<!-- Table of contents for API; must be named manual-nav to turn off auto nav. -->
+			<div id="manual-nav">
+			<dl>
+			
+			
+			
+			
+				
+				<dd><a href="#Domain">type Domain</a></dd>
+				
+				
+			
+				
+				<dd><a href="#Proxy">type Proxy</a></dd>
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#NewProxy">func NewProxy(filePath string) (*Proxy, error)</a></dd>
+				
+				
+					
+					<dd>&nbsp; &nbsp; <a href="#Proxy.Authenticate">func (p *Proxy) Authenticate() http.Handler</a></dd>
+				
+			
+				
+				<dd><a href="#Response">type Response</a></dd>
+				
+				
+			
+				
+				<dd><a href="#User">type User</a></dd>
+				
+				
+			
+			
+			</dl>
+			</div><!-- #manual-nav -->
+
+		
+
+		
+			<h4>Package files</h4>
+			<p>
+			<span style="font-size:90%">
+			
+				<a href="./proxyauth/proxyauth.go">proxyauth.go</a>
+			
+			</span>
+			</p>
+		
+		</div><!-- .expanded -->
+		</div><!-- #pkg-index -->
+
+		<div id="pkg-callgraph" class="toggle" style="display: none">
+		<div class="collapsed">
+			<h2 class="toggleButton" title="Click to show Internal Call Graph section">Internal call graph ▹</h2>
+		</div> <!-- .expanded -->
+		<div class="expanded">
+			<h2 class="toggleButton" title="Click to hide Internal Call Graph section">Internal call graph ▾</h2>
+                        <p>
+                          In the call graph viewer below, each node
+                          is a function belonging to this package
+                          and its children are the functions it
+                          calls&mdash;perhaps dynamically.
+                        </p>
+                        <p>
+                          The root nodes are the entry points of the
+                          package: functions that may be called from
+                          outside the package.  
+                          There may be non-exported or anonymous
+                          functions among them if they are called
+                          dynamically from another package.
+                        </p>
+                        <p>
+                          Click a node to visit that function's source code.
+                          From there you can visit its callers by
+                          clicking its declaring <code>func</code>
+                          token.
+                        </p>
+                        <p>
+                          Functions may be omitted if they were
+                          determined to be unreachable in the
+                          particular programs or tests that were
+                          analyzed.
+                        </p>
+                        <!-- Zero means show all package entry points. -->
+                        <ul style="margin-left: 0.5in" id="callgraph-0" class="treeview"></ul>
+                        </script>                        
+		</div>
+		</div> <!-- #pkg-callgraph -->
+
+		
+		
+		
+		
+			
+			
+			<h2 id="Domain">type <a href="/src/pkg/bryfry_swas/proxyauth/proxyauth.go?s=660:745#L15">Domain</a></h2>
+			<pre>type Domain struct {
+    Address <a href="/pkg/builtin/#string">string</a> `json:&#34;domain&#34;`
+    Users   []<a href="#User">User</a> `json:&#34;users&#34;`
+}</pre>
+			<p>
+Domains are identified by their Address (unique) and contain a slice of all the
+registered Users for that domain
+</p>
+
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="Proxy">type <a href="/src/pkg/bryfry_swas/proxyauth/proxyauth.go?s=500:539#L9">Proxy</a></h2>
+			<pre>type Proxy struct {
+    Domains []<a href="#Domain">Domain</a>
+}</pre>
+			<p>
+Proxy data model of a slice of Domains searched when authentication request is made.
+Proxy is the highest level data model in proxyauth, the golang type analogous to users.json
+</p>
+
+
+			
+
+			
+
+			
+			
+			
+
+			
+				
+				<h3 id="NewProxy">func <a href="/src/pkg/bryfry_swas/proxyauth/proxyauth.go?s=1513:1559#L41">NewProxy</a></h3>
+				<pre>func NewProxy(filePath <a href="/pkg/builtin/#string">string</a>) (*<a href="#Proxy">Proxy</a>, <a href="/pkg/builtin/#error">error</a>)</pre>
+				<p>
+Parse the json users file (filePath) and return the proxy data type.
+</p>
+
+				
+			        
+			
+
+			
+				
+				<h3 id="Proxy.Authenticate">func (*Proxy) <a href="/src/pkg/bryfry_swas/proxyauth/proxyauth.go?s=3769:3812#L131">Authenticate</a></h3>
+				<pre>func (p *<a href="#Proxy">Proxy</a>) Authenticate() <a href="/pkg/net/http/">http</a>.<a href="/pkg/net/http/#Handler">Handler</a></pre>
+				<p>
+Proxy Authentication handler expects: domain (mux url variable) username and password
+(query parameters). HTTP response returns the appropriate json response and Status
+Code as specified in SPEC.md
+</p>
+
+				
+				
+			        
+			
+		
+			
+			
+			<h2 id="Response">type <a href="/src/pkg/bryfry_swas/proxyauth/proxyauth.go?s=1107:1213#L28">Response</a></h2>
+			<pre>type Response struct {
+    Success <a href="/pkg/builtin/#bool">bool</a>   `json:&#34;access_granted&#34;`
+    Reason  <a href="/pkg/builtin/#string">string</a> `json:&#34;reason,omitempty&#34;`
+}</pre>
+			<p>
+Response is used for communicating the result from an attempted authentication
+</p>
+
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+			
+			
+			<h2 id="User">type <a href="/src/pkg/bryfry_swas/proxyauth/proxyauth.go?s=933:1023#L22">User</a></h2>
+			<pre>type User struct {
+    Username <a href="/pkg/builtin/#string">string</a> `json:&#34;username&#34;`
+    Password <a href="/pkg/builtin/#string">string</a> `json:&#34;password&#34;`
+}</pre>
+			<p>
+Users are identified by their Username (unique) and each has a Base 64 encoded, SHA 256 digest
+of the users password.  See SPEC.md or b64sha256 for specific implementation details
+</p>
+
+
+			
+
+			
+
+			
+			
+			
+
+			
+
+			
+		
+	
+
+	
+
+
+
+
+
+
+
+<div id="footer">
+Build version go1.3.1.<br>
+Except as <a href="https://developers.google.com/site-policies#restrictions">noted</a>,
+the content of this page is licensed under the
+Creative Commons Attribution 3.0 License,
+and code is licensed under a <a href="/LICENSE">BSD license</a>.<br>
+<a href="/doc/tos.html">Terms of Service</a> | 
+<a href="http://www.google.com/intl/en/policies/privacy/">Privacy Policy</a>
+</div>
+
+</div><!-- .container -->
+</div><!-- #page -->
+
+<!-- TODO(adonovan): load these from <head> using "defer" attribute? -->
+<script type="text/javascript" src=".godoc/jquery.js"></script>
+<script type="text/javascript" src=".godoc/jquery.treeview.js"></script>
+<script type="text/javascript" src=".godoc/jquery.treeview.edit.js"></script>
+
+
+<script type="text/javascript" src=".godoc/godocs.js"></script>
+
+</body>
+</html>
+

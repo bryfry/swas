@@ -1,3 +1,5 @@
+// proxyauth package provides data models and associated functions required to
+// facilitate a proxy authentication server as specified in SPEC.md
 package proxyauth
 
 import (
@@ -12,20 +14,27 @@ import (
 	"github.com/gorilla/mux"
 )
 
+// Proxy data model of a slice of Domains searched when authentication request is made.
+// Proxy is the highest level data model in proxyauth, the golang type analogous to users.json
 type Proxy struct {
 	Domains []Domain
 }
 
+// Domains are identified by their Address (unique) and contain a slice of all the
+// registered Users for that domain
 type Domain struct {
 	Address string `json:"domain"`
 	Users   []User `json:"users"`
 }
 
+// Users are identified by their Username (unique) and each has a Base 64 encoded, SHA 256 digest
+// of the users password.  See SPEC.md or b64sha256 for specific implementation details
 type User struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
+// Response is used for communicating the result from an attempted authentication
 type Response struct {
 	Success bool   `json:"access_granted"`
 	Reason  string `json:"reason,omitempty"`
@@ -38,10 +47,7 @@ func b64sha256(password string) string {
 	return base64.StdEncoding.EncodeToString(s256.Sum(nil))
 }
 
-// Parse the json users file and return the proxy data type
-// Unfortunately the process of decoding from json means plaintext
-// passwords are handled temporarily and then overwritten with b64sha256
-// representations
+// Parse the json users file (filePath) and return the proxy data type.
 func NewProxy(filePath string) (*Proxy, error) {
 	usersJson, err := os.Open(filePath)
 	if err != nil {
@@ -129,9 +135,9 @@ func successBody(success bool) string {
 	return string(b) + "\n" // http body fix, expects newline at end
 }
 
-// Proxy Authentication handler expects looks up domain (mux url variable),
-// username and password (query parameters) and returns the appropriate
-// Response and Status Code
+// Proxy Authentication handler expects: domain (mux url variable) username and password
+// (query parameters). HTTP response returns the appropriate json response and Status
+// Code as specified in SPEC.md
 func (p *Proxy) Authenticate() http.Handler {
 	return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		logfields := log.Fields{
